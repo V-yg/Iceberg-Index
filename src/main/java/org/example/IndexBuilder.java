@@ -57,11 +57,11 @@ public class IndexBuilder {
         Reader reader = new FileReader(dataFilePath).read();
         long nrow = reader.getNumberOfRows();
         VectorizedRowBatch batch = reader.getSchema().createRowBatch();
-
         try (RecordReader rows = reader.rows()) {
             BloomFilter<Long> bf = BloomFilter.create(Funnels.longFunnel(), nrow, FPP);
 
             while (rows.nextBatch(batch)) {
+//                currently we hard code column for testing
                 LongColumnVector longVector = (LongColumnVector) batch.cols[0];
                 Arrays.stream(longVector.vector).boxed().forEach(bf::put);
             }

@@ -7,7 +7,6 @@ import java.io.IOException;
 
 public class FileReader {
     String filePath;
-
     public FileReader(String filePath) {
         this.filePath = filePath;
     }

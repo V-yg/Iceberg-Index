@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// format defined in https://github.com/apache/iceberg/blob/master/format/puffin-spec.md#blob-types
 public class PuffinBuilder {
     final static byte[] MAGIC = {0x50, 0x46, 0x41, 0x31};
     final static int NO_COMPRESSION_FLAG = 0;
@@ -36,7 +37,6 @@ public class PuffinBuilder {
         buffer.putInt(payload.length);
         buffer.putInt(NO_COMPRESSION_FLAG);
         buffer.put(MAGIC);
-        System.out.printf("parload%s,len:%d\n", footer.toJson(), payload.length);
         buffer.flip();
         byte[] remaining = new byte[buffer.remaining()];
         buffer.get(remaining);
@@ -61,7 +61,7 @@ public class PuffinBuilder {
 
 
     public byte[] build() throws IOException {
-        ByteBuffer buffer = ByteBuffer.allocate((offset * 3)).order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer buffer = ByteBuffer.allocate((offset * 2)).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put(MAGIC);
         blobs.stream().map(Blob::content).forEach(buffer::put);
         buffer.put(getFooter());

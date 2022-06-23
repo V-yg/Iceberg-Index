@@ -43,7 +43,7 @@ public class Main {
         List<String> dataFilePaths = HDFS.listDataFile(hadoop_fs, data_file_dir);
 //        currently only support ORC file
         dataFilePaths = dataFilePaths.stream().filter(s -> s.endsWith(".orc")).collect(Collectors.toList());
-
+//      build index for each data file in given directory
         for (String p : dataFilePaths) {
             IndexBuilder.newIndexBuilder().
                     fromDataFile(p).
